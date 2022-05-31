@@ -4,7 +4,7 @@ This is a template that can be used to quickly create .NET Core Web API projects
 
 ## Pre-requisites
 
-Ensure that you have .NET 5.0 or later installed along with Docker Desktop
+Ensure that you have .NET 6.0 or later installed along with Docker Desktop
 
 ## Getting Started
 
@@ -21,5 +21,5 @@ To create your own project from this template, follow the steps outlined here:
 ## Other things to consider
 
 1. This sample web api is designed to run in a container using an orchestration layer like Kubernetes. Therefore, it does not enable HTTPS with the assumption being that HTTPS traffic will be terminated at the Kubernetes cluster ingress point
-2. This service requires an Okta Access Token for any Controller or Method marked with [Authorize] annotation.
+2. This service requires an Okta Access Token for any Controller or Method marked with [Authorize] annotation. This can be replaced by other authentication services, for example, with Auth0
 3. If not running in a Kubernetes cluster, use `app.UseHsts()` in the Configure method
