@@ -36,7 +36,7 @@ namespace TemplateService.Controllers
 
         [SwaggerOperation(
             Summary = "Dynamically changes the log level - helpful for debugging",
-            Description = "Dynamically change the log leve",
+            Description = "Dynamically change the log level",
             OperationId = "ChangeLogLevel"
         )]
         [HttpPost("loglevel")]
