@@ -1,54 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-using TemplateService.Models;
-using Refit;
-using TemplateService.Interfaces;
 
-namespace TemplateService.Controllers
+namespace TemplateService.Controllers;
+
+[ApiController]
+[Route("")]
+public class InfoController : ControllerBase
 {
-    [Route("")]
-    public class InfoController : BaseController
+    [HttpGet]
+    public async Task<IActionResult> GetInfo()
     {
-        [HttpGet]
-        [Produces("application/json")]
-        public async Task<IActionResult> GetInfo()
+        var result = await Task.Run(() => new
         {
-            return Ok(new
-            {
-                Message = "Template Web Service 1.0",
-                CurrentMinimumLogLevel = Program.LogLevelSwitch.MinimumLevel,
-                AvailableAt = await GetMyExternalIP()
-            });
-        }
+            Name = "Pyxis International Aircloud Template Service",
+            Version = "1.0.0",
+            Environment = GetEnvironmentVariable()
+        });
+        return Ok(result);
+    }
 
-        private async Task<string> GetMyExternalIP()
-        {
-            var client = RestService.For<IExternalIp>("http://ipv4.icanhazip.com/");
-            var myIp = await client.GetMyExternalIp();
-            return myIp.Trim();
-        }
-
-        [SwaggerOperation(
-            Summary = "Dynamically changes the log level - helpful for debugging",
-            Description = "Dynamically change the log level",
-            OperationId = "ChangeLogLevel"
-        )]
-        [HttpPost("loglevel")]
-        public async Task<IActionResult> ChangeLogLevel([FromBody] LogLevelRequest logLevelRequest)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Unknown log level");
-            }
-
-            await Task.Run(() => { Program.LogLevelSwitch.MinimumLevel = logLevelRequest.LogLevel; });
-            return Ok();
-        }
+    private string? GetEnvironmentVariable()
+    {
+        return Environment.GetEnvironmentVariable("Settings__Value");
     }
 }
